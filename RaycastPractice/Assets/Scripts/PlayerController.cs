@@ -5,12 +5,12 @@ using UnityEngine;
 [RequireComponent (typeof(Controller2D))]
 public class PlayerController : MonoBehaviour
 {
-    public float moveSpeed = 6;
-    public float gravity = -20;
+    public float moveSpeed = 6f;
+    public float jumpVelocity = 8f;
+    public float gravity = -20f;
     Vector3 velocity;
 
     Controller2D controller;
-
 
     // Start is called before the first frame update
     void Start()
@@ -26,14 +26,13 @@ public class PlayerController : MonoBehaviour
 
         Vector2 input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
 
-        velocity.x = input.x * moveSpeed;
+        if (Input.GetKeyDown(KeyCode.Space) && controller.collisions.below)
+        {
+            velocity.y = jumpVelocity;
+        }
 
+        velocity.x = input.x * moveSpeed;
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
-    }
-
-    private void FixedUpdate()
-    {
-        
     }
 }
